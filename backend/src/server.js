@@ -21,7 +21,7 @@ app.get("/debug-sentry", (req,res) =>{
 });
 
 app.get("/", (req, res) => {
-    res.send("Hello from backend");
+    res.send("Hello from backend!");
 });
 
 app.use("/api/inngest", serve({client: inngest, functions}));
