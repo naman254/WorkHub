@@ -8,6 +8,7 @@ import {inngest, functions} from "./config/inngest.js";
 import {serve} from "inngest/express";
 import chatRoutes from "./routes/chat.route.js"
 
+
 import * as Sentry from "@sentry/node";
 
 
@@ -26,6 +27,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/inngest", serve({client: inngest, functions}));
 app.use("/api/chat", chatRoutes)
+
 
 Sentry.setupExpressErrorHandler(app);
 

@@ -8,42 +8,46 @@ import { deleteStreamUser } from "./stream.js";
 export const inngest = new Inngest({ id: "WorkHub" });
 
 const syncUser = inngest.createFunction(
-    {id: "syncUser"},
-    {event: "clerk/user.created"},
-    async ({ event }) => {
-        await connectDB();
+	{id: "syncUser"},
+	{event: "clerk/user.created"},
+	async ({ event }) => {
+		await connectDB();
 
-        const {id, email_addresses, first_name, last_name, image_url} = event.data;
+		const {id, email_addresses, first_name, last_name, image_url} = event.data;
 
-        const newUser = {
-            clerkId: id,
-            email: email_addresses[0]?.email_address,
-            name: `${first_name || ""} ${last_name || ""}`,
-            image: image_url
-        };
+		const newUser = {
+			clerkId: id,
+			email: email_addresses[0]?.email_address,
+			name: `${first_name || ""} ${last_name || ""}`,
+			image: image_url
+		};
 
-        await User.create(newUser);
-        console.log("➡️ Attempting to upsert Stream user:", userData);
+		await User.create(newUser);
+		console.log("➡️ Attempting to upsert Stream user:", {
+			id: newUser.clerkId?.toString(),
+			name: newUser.name,
+			image: newUser.image,
+		});
 
-        await upsertStreamUser({
-            id: newUser.clerkId.toString(),
-            name: newUser.name,
-            image: newUser.image,
-           
-        })
-    }
+		await upsertStreamUser({
+			id: newUser.clerkId.toString(),
+			name: newUser.name,
+			image: newUser.image,
+			
+		})
+	}
 );
 
 const deleteUserFromDB = inngest.createFunction(
-    {id: "deleteUserFromDB"},
-    {event: "clerk/user.deleted"},
-    async ({ event }) => {
-       await connectDB();
-       const {id} = event.data;
-       await User.deleteOne({clerkId: id});
+	{id: "deleteUserFromDB"},
+	{event: "clerk/user.deleted"},
+	async ({ event }) => {
+	   await connectDB();
+	   const {id} = event.data;
+	   await User.deleteOne({clerkId: id});
 
-       await deleteStreamUser(id.toString());
-    }
+	   await deleteStreamUser(id.toString());
+	}
 );
 
 
