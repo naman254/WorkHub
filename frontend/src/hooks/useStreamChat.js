@@ -23,12 +23,15 @@ useEffect(() =>{
 
         try {
             const client = StreamChat.getInstance(STREAM_API_KEY);
+            let cancelled = false;
             await client.connectUser({
                 id: user.id,
                 name: user.fullName,
                 image: user.imageUrl
             })
-            setChatClient(client);
+            if (!cancelled) {
+          setChatClient(client);
+        }
         } catch (error) {
             console.log("Error connecting to stream",error);
             Sentry.captureException(error, {
