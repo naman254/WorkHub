@@ -3,6 +3,7 @@ import { connectDB } from "./db.js";
 import {User} from "../models/user.model.js";
 import { upsertStreamUser } from "./stream.js";
 import { deleteStreamUser } from "./stream.js";
+import { addUserToPublicChannels } from "./stream.js";
 
 
 export const inngest = new Inngest({ id: "WorkHub" });
@@ -34,7 +35,8 @@ const syncUser = inngest.createFunction(
 			name: newUser.name,
 			image: newUser.image,
 			
-		})
+		});
+		await addUserToPublicChannels(newUser.clerkId.toString());
 	}
 );
 

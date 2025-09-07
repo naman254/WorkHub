@@ -11,7 +11,7 @@ export const upsertStreamUser = async (userData) => {
     } catch (error) {
         console.log("Error upserting Stream user:", error);
     }
-}
+};
 
 export const deleteStreamUser = async (userId) => {
     try {
@@ -20,7 +20,7 @@ export const deleteStreamUser = async (userId) => {
     } catch (error) {
         console.log("Error deleting Stream user:", error);
     }
-}
+};
 
 export const generateStreamToken = (userId) => {
     try {
@@ -30,4 +30,12 @@ export const generateStreamToken = (userId) => {
         console.log("Error generating Stream token:", error);
         return null;
     }
-}
+};
+
+export const addUserToPublicChannels = async (newUserId) => {
+  const publicChannels = await streamClient.queryChannels({ discoverable: true });
+
+  for (const channel of publicChannels) {
+    await channel.addMembers([newUserId]);
+  }
+};
