@@ -3,7 +3,7 @@ import * as Sentry from "@sentry/react";
 import { Navigate, Route, Routes } from 'react-router';
 import AuthPage from './pages/AuthPage.jsx';
 import CallPage from './pages/CallPage.jsx';
-import HomePage from './pages/Homepage.jsx';
+import HomePage from './pages/HomePage.jsx';
 
 const SentryRoutes = Sentry.withSentryReactRouterV7Routing(Routes);
 
