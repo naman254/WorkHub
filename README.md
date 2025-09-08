@@ -78,5 +78,10 @@ npm run dev
 ## 🌐 Deployment
 This application is deployed on Vercel.
 
+---
+## 📄 License
+This project is licensed under the [MIT License](./LICENSE).
+
+
 
 
